@@ -6,4 +6,4 @@ for more information.
 
 .. Targets:
 
-.. _documentation: http://quip1.ohsu.edu:8080/qiutil
+.. _documentation: http://qidicom.readthedocs.org/en/latest/

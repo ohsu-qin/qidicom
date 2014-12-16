@@ -9,7 +9,7 @@ Synopsis
 ********
 qidicom provides a facade for DICOM file interaction.
 
-:API: https://readthedocs.org/projects/qidicom/
+:API: http://qidicom.readthedocs.org/en/latest/api/index.html
 
 :Git: github.com/ohsu-qin/qidicom
 
