@@ -1,0 +1,65 @@
+.. _index:
+
+=======================================
+qidicom - Quantitative Imaging Utilities
+=======================================
+
+********
+Synopsis
+********
+qidicom provides a facade for DICOM file interaction.
+
+:API: https://readthedocs.org/projects/qidicom/
+
+:Git: github.com/ohsu-qin/qidicom
+
+
+************
+Feature List
+************
+1. Python logging configuration.
+
+2. Common command utility functions.
+
+3. Collection data structures and utilities. 
+
+4. File helper functions.
+
+
+************
+Installation
+************
+Install the ``qicom`` package with Python_ pip_::
+
+    pip install qidicom
+
+
+*****
+Usage
+*****
+Run the following command for the utility options::
+
+    lsdicom --help
+
+
+---------
+
+.. container:: copyright
+
+  Copyright (C) 2014 Oregon Health & Science University `Knight Cancer Institute`_.
+  See LICENSE.txt for permissions.
+
+
+.. Targets:
+
+.. _Knight Cancer Institute: http://www.ohsu.edu/xd/health/services/cancer
+
+.. _pip: https://pypi.python.org/pypi/pip
+
+.. _Python: http://www.python.org
+
+.. toctree::
+  :hidden:
+
+  api/index
+
