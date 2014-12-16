@@ -47,12 +47,14 @@ Run the following command for the utility options::
 .. container:: copyright
 
   Copyright (C) 2014 Oregon Health & Science University `Knight Cancer Institute`_.
-  See LICENSE.txt for permissions.
+  See the license_ for permissions.
 
 
 .. Targets:
 
 .. _Knight Cancer Institute: http://www.ohsu.edu/xd/health/services/cancer
+
+.. _license: https://github.com/ohsu-qin/qidicom/blob/master/LICENSE.txt
 
 .. _pip: https://pypi.python.org/pypi/pip
 
