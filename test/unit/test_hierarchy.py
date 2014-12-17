@@ -1,7 +1,7 @@
 import os
 import glob
 from nose.tools import (assert_equal, assert_true)
-import qidicom
+from qidicom import hierarchy
 from qiutil.logging import logger
 from .. import ROOT
 
@@ -31,7 +31,7 @@ class TestHierarchy(object):
     """The dicom hierarchy unit tests."""
 
     def test_hierarchy(self):
-        paths = list(qidicom.hierarchy.read_hierarchy(FIXTURE))
+        paths = list(hierarchy.read_hierarchy(FIXTURE))
         assert_equal(len(paths), 1,
                      "The DICOM Helper image hierarchy path count is incorrect")
         path = paths[0]
