@@ -1,6 +1,3 @@
-# Absolute import (standard in Python 3) imports dicom from pydicom
-# rather than the parent module.
-from __future__ import absolute_import
 import os
 import re
 import operator
@@ -44,28 +41,31 @@ def edit(*in_files, **opts):
         DICOM files
     :param opts: the DICOM header (I{name}, I{value}) tag values to set
         and the following option:
+    :param dest: the destination directory (default current directory)
     :return: the modified file paths
     """
-    dest = opts.pop('dest', None)
+    dest = opts.pop('dest', os.getcwd())
+    # Name -> tag converter.
+    tag_for = lambda name: datadict.tag_for_name(name.replace(' ', ''))
     # The {tag: value} dictionary.
-    tv = {datadict.tag_for_name(t.replace(' ', ''))
-                          : v for t, v in opts.iteritems()}
-    # The {tag: VR} dictionary.
-    tvr = {t: datadict.get_entry(t)[0] for t in tv.iterkeys()}
+    tv = {tag_for(name): value for name, value in opts.iteritems()}
+    # The {tag: DICOM VR} dictionary.
+    tvr = {tag: datadict.get_entry(tag)[0] for tag in tv.iterkeys()}
 
-    # Edit the files
+    # The array to collect the DICOM file names.
+    fnames = []
+    # Edit the files.
     logger(__name__).info("Editing the DICOM files with the following tag"
-                          " values: %s..." % tag_values)
-    for ds in writer.edit(*in_files):
+                          " values: %s..." % tv)
+    for ds in writer.edit(*in_files, dest=dest):
         # Set the tag values.
-        for t, v in tv.iteritems():
-            if t in ds:
-                ds[t].value = v
+        for tag, value in tv.iteritems():
+            if tag in ds:
+                ds[tag].value = value
             else:
-                ds.add_new(t, tvr[t], v)
-
-    # The output file path formatter.
-    format_out_file = lambda f: os.path.join(dest, os.path.split(f)[1])
+                ds.add_new(tag, tvr[tag], value)
+        _, fname = os.path.split(ds.filename)
+        fnames.append(fname)
 
     # Return the output file paths.
-    return [format_out_file(f) for f in in_files]
+    return [os.path.join(dest, f) for f in fnames]
