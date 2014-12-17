@@ -2,7 +2,6 @@ from collections import defaultdict
 from qiutil.dictionary_hierarchy import DictionaryHierarchy
 from . import (reader, meta)
 
-
 def read_hierarchy(*files):
     """
     Returns the ImageHierarchy for the DICOM files in the given locations.
