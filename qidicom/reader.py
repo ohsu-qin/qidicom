@@ -1,12 +1,9 @@
-# Absolute import (standard in Python 3) imports dicom from pydicom
-# rather than the parent module.
-from __future__ import absolute_import
 import os
 import dicom
 from dicom.filereader import InvalidDicomError
 import qiutil
 from qiutil.logging import logger
-
+from qiutil.file import FileIterator
 
 def iter_dicom(*dicom_files):
     """
