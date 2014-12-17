@@ -1,5 +1,5 @@
 from collections import defaultdict
-from ..dictionary_hierarchy import DictionaryHierarchy
+from qiutil.dictionary_hierarchy import DictionaryHierarchy
 from . import (reader, meta)
 
 
