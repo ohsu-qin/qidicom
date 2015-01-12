@@ -1,6 +1,10 @@
 This history lists major release themes. See the GitHub commits
 for change details.
 
+2.1.4 / 2014-01-12
+------------------
+* Add package data in setup.
+
 2.1.3 / 2014-12-17
 ------------------
 * Fix qiutil interaction.
