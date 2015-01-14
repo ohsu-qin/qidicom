@@ -7,20 +7,19 @@ import sys
 import imp
 import argparse
 from collections import defaultdict
-import qiutil
-import qidicom
+from qiutil import command
+from qiutil.logging import logger
+
+from qidicom import (reader, meta)
 
 
 def main(argv=sys.argv):
     # Parse the command line arguments.
     files, opts = _parse_arguments()
-    
     # The XNAT configuration.
     config = opts.pop('config', None)
-
     # Configure the logger.
-    qiutil.command.configure_log('lsdicom', opts)
-
+    command.configure_log('lsdicom', opts)
     # Print the tag value lines.
     _print_tag_values(*files, **opts)
 
@@ -32,7 +31,7 @@ def _parse_arguments():
     parser = argparse.ArgumentParser()
 
     # The log options.
-    qiutil.command.add_logging_options(parser)
+    command.add_options(parser)
 
     # The output content options.
     tag_grp = parser.add_mutually_exclusive_group()
@@ -95,7 +94,7 @@ def _print_tag_values(*files, **opts):
 
     if len(files) == 1:
         # The DICOM data set.
-        ds = next(hdr for hdr in qidicom.reader.iter_dicom_headers(*files))
+        ds = next(hdr for hdr in reader.iter_dicom_headers(*files))
         # The DICOM tag value dictionary.
         tdict = _read_tags(ds, *tags)
         tag_col_len = max([len(tag) for tag in tags])
@@ -108,7 +107,7 @@ def _print_tag_values(*files, **opts):
     if opts.get('header'):
         print >> output, '\t'.join(tags)
 
-    for ds in qidicom.reader.iter_dicom_headers(*files):
+    for ds in reader.iter_dicom_headers(*files):
         # The DICOM tag value dictionary.
         tdict = _read_tags(ds, *tags)
         # If there is at least one tag with a valid value, then print
@@ -132,7 +131,7 @@ def _collect_default_tags(*files):
     :return: the tags with a valid value
     """
     tag_set = set()
-    for ds in qidicom.reader.iter_dicom_headers(*files):
+    for ds in reader.iter_dicom_headers(*files):
         tdict = _read_tags(ds)
         tag_set.update(tdict.iterkeys())
 
@@ -152,7 +151,7 @@ def _read_tags(ds, *tags):
     :param tags: the DICOM tags to read (default all tags)
     :return: the filtered tag dictionary
     """
-    tdict = qidicom.meta.select(ds, *tags)
+    tdict = meta.select(ds, *tags)
     return {t: v for t, v in tdict.iteritems() if v and '\n' not in str(v)}
 
 if __name__ == '__main__':
