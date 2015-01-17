@@ -1,6 +1,10 @@
 This history lists major release themes. See the GitHub commits
 for change details.
 
+2.1.6 / 2014-01-14
+------------------
+* Added series grouper function.
+
 2.1.5 / 2014-01-14
 ------------------
 * Fix for qiutil refactoring.
