@@ -36,7 +36,7 @@ setup(
     keywords = 'Imaging QIN DICOM',
     packages = find_packages(exclude=['test**']),
     scripts = glob.glob('bin/*'),
-    url = 'https://github.com/ohsu-qin/qidicom',
+    url = 'http://qidicom.readthedocs.org/en/latest/',
     description = 'DICOM facade.',
     long_description = readme(),
     classifiers = [
