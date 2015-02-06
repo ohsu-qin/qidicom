@@ -16,8 +16,6 @@ from qidicom import (reader, meta)
 def main(argv=sys.argv):
     # Parse the command line arguments.
     files, opts = _parse_arguments()
-    # The XNAT configuration.
-    config = opts.pop('config', None)
     # Configure the logger.
     command.configure_log('lsdicom', opts)
     # Print the tag value lines.
