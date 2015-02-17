@@ -23,8 +23,8 @@ SERIES_NBR = 11
 SERIES_UID = '1.3.12.2.1107.5.2.32.35139.2010011914134225154552501.0.0.0'
 """The test image Series UID."""
 
-INSTANCE_NBR = 6
-"""The test image Instance Number."""
+INSTANCE_NUMBERS = [6, 7]
+"""The test image Instance Numbers."""
 
 
 class TestHierarchy(object):
@@ -32,19 +32,31 @@ class TestHierarchy(object):
 
     def test_hierarchy(self):
         paths = list(hierarchy.read_hierarchy(FIXTURE))
-        assert_equal(len(paths), 1,
-                     "The DICOM Helper image hierarchy path count is incorrect")
-        path = paths[0]
-        assert_equal(len(path), 4,
-                     "The DICOM Helper image path item count is incorrect")
-        sbj_id, study_uid, series_uid, inst_nbr = path
-        assert_equal(sbj_id, SBJ_ID, "Subject ID incorrect: %s" % sbj_id)
-        assert_equal(study_uid, STUDY_UID,
-                     "Study UID incorrect: %s" % study_uid)
-        assert_equal(series_uid, SERIES_UID,
-                     "Series UID incorrect: %s" % series_uid)
-        assert_equal(inst_nbr, INSTANCE_NBR,
-                     "Instance Number incorrect: %s" % inst_nbr)
+        assert_equal(len(paths), len(INSTANCE_NUMBERS),
+                     "The image hierarchy path count is incorrect: %d" %
+                     len(paths))
+        for path in paths:
+            assert_equal(len(path), 4,
+                         "The image hierarchy depth is incorrect: %d" %
+                         len(paths))
+            sbj_id, study_uid, series_uid, inst_nbr = path
+            assert_equal(sbj_id, SBJ_ID, "Subject ID incorrect: %s" % sbj_id)
+            assert_equal(study_uid, STUDY_UID,
+                         "Study UID incorrect: %s" % study_uid)
+            assert_equal(series_uid, SERIES_UID,
+                         "Series UID incorrect: %s" % series_uid)
+            assert_true(inst_nbr in INSTANCE_NUMBERS,
+                        "Instance Number incorrect: %s" % inst_nbr)
+
+    def test_group_by(self):
+        groups = hierarchy.group_by('InstanceNumber', FIXTURE)
+        assert_equal(len(groups), len(INSTANCE_NUMBERS),
+                     "The group count is incorrect: %d" % len(groups))
+        assert_equal(set(groups.keys()), set(INSTANCE_NUMBERS),
+                     "The group keys are incorrect: %s" % groups.keys())
+        for tag, images in groups.iteritems():
+            assert_equal(len(images), 1, "The group %d image count is"
+                                         " incorrect" % len(images))
 
 
 if __name__ == "__main__":

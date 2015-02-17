@@ -3,7 +3,7 @@ from qiutil.dictionary_hierarchy import DictionaryHierarchy
 from . import (reader, meta)
 
 
-def group_dicom_files(tag, *files):
+def group_by(tag, *files):
     """
     Groups DICOM files by the given tag description. Subtraction
     images, indicated by a ``SUB`` DICOM Image Type, are ignored.
@@ -11,15 +11,15 @@ def group_dicom_files(tag, *files):
 
     :param tag: the DICOM tag
     :param dicom_files: the DICOM files or directories
-    :return: a {series number: [DICOM file names]} dictionary
+    :return: a {tag: [DICOM file names]} dictionary
     """
     # Remove tag blanks.
-    tag = tag.sub(' ', '')
+    tag = tag.replace(' ', '')
     series_dict = defaultdict(list)
     for ds in reader.iter_dicom_headers(*files):
         # Ignore subtraction images.
         if not 'SUB' in ds.ImageType:
-            series_dict[int(getattr(ds, tag)].append(ds.filename)
+            series_dict[getattr(ds, tag)].append(ds.filename)
 
     return series_dict
 
