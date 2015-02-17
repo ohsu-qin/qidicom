@@ -1,6 +1,10 @@
 This history lists major release themes. See the GitHub commits
 for change details.
 
+2.2.1 / 2015-02-17
+------------------
+* Add eddicom utility.
+
 2.1.6 / 2015-01-16
 ------------------
 * Add series grouping function.
