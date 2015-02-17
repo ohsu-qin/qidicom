@@ -2,22 +2,21 @@
 """
 Prints tab-delimited DICOM tag values.
 """
-import os
 import sys
-import imp
+import os
 import argparse
 from collections import defaultdict
 from qiutil import command
 from qiutil.logging import logger
-
 from qidicom import (reader, meta)
-
 
 def main(argv=sys.argv):
     # Parse the command line arguments.
     files, opts = _parse_arguments()
+    # Break out the logging options.
+    log_opts = {k: opts.pop(k) for k in opts.keys() if k.startswith('log')}
     # Configure the logger.
-    command.configure_log('lsdicom', opts)
+    command.configure_log('lsdicom', log_opts)
     # Print the tag value lines.
     _print_tag_values(*files, **opts)
 
@@ -41,16 +40,16 @@ def _parse_arguments():
                          help='the comma-separated tags to print'
                          '(default is all non-pixel, non-bracketed tags whose'
                          'value does not include a line break)')
-    parser.add_argument(
-        '-n', '--no-header', help='omit the tag name header line',
-        dest='header', action='store_false')
+    parser.add_argument( '-n', '--no-header',
+                        help='omit the tag name header line', dest='header',
+                        action='store_false')
     parser.add_argument(
         '-o', '--output', help='print the values to the given file')
 
     # The input file argument.
-    parser.add_argument(
-        'files', help='the DICOM files or directories to list (default stdin)',
-        metavar='FILE', nargs='+')
+    parser.add_argument('files',
+                        help='the DICOM files or directories to list (default stdin)',
+                        metavar='FILE', nargs='+')
 
     args = vars(parser.parse_args())
     nonempty_args = dict((k, v) for k, v in args.iteritems() if v != None)
@@ -151,6 +150,7 @@ def _read_tags(ds, *tags):
     """
     tdict = meta.select(ds, *tags)
     return {t: v for t, v in tdict.iteritems() if v and '\n' not in str(v)}
+
 
 if __name__ == '__main__':
     sys.exit(main())
