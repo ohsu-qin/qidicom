@@ -19,7 +19,17 @@ def group_by(tag, *files):
     for ds in reader.iter_dicom_headers(*files):
         # Ignore subtraction images.
         if not 'SUB' in ds.ImageType:
-            series_dict[getattr(ds, tag)].append(ds.filename)
+            # The dictionary key is the string form of the DICOM tag value
+            # rather than the tag value itself to work around the following
+            # pydicom bug:
+            # * Serializing a pydicom tag value with Python 2.x results in
+            #   the following error:
+            #     TypeError: a class that defines __slots__ without defining __getstate__ cannot be pickled
+            #   The work-around is to unwrap the tag value.
+            value = getattr(ds, tag)
+            # Unwrap the value as either an integer or a string.
+            key = int(value) if isinstance(value, int) else str(value)
+            series_dict[key].append(ds.filename)
 
     return series_dict
 

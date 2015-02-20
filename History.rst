@@ -1,6 +1,10 @@
 This history lists major release themes. See the GitHub commits
 for change details.
 
+2.2.2 / 2015-02-19
+------------------
+* Unwrap pydicom DICOM tag values.
+
 2.2.1 / 2015-02-17
 ------------------
 * Add eddicom utility.
