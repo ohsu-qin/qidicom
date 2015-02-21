@@ -37,7 +37,7 @@ setup(
     packages = find_packages(exclude=['test**']),
     scripts = glob.glob('bin/*'),
     url = 'http://qidicom.readthedocs.org/en/latest/',
-    description = 'DICOM facade.',
+    description = 'DICOM utilities and Python facade',
     long_description = readme(),
     classifiers = [
         'Development Status :: 5 - Production/Stable',
