@@ -19,7 +19,7 @@ def select(ds, *tags):
     """
     if not tags:
         # Skip tags with a bracketed name.
-        tags = (de.name for de in ds if de.name[0] != '[')
+        tags = (de.name for de in ds if de.name and de.name[0] != '[')
     tdict = {}
     for t in tags:
         try:
