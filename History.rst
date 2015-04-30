@@ -1,6 +1,10 @@
 This history lists major release themes. See the GitHub commits
 for change details.
 
+3.2.4 / 2015-04-29
+------------------
+* Update qiutil version to pull in logger changes.
+
 2.2.3 / 2015-04-09
 ------------------
 * Handle empty DICOM tag names.
