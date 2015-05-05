@@ -1,7 +1,11 @@
 This history lists major release themes. See the GitHub commits
 for change details.
 
-3.2.4 / 2015-04-29
+2.2.5 / 2015-05-05
+------------------
+* Update qiutil version.
+
+2.2.4 / 2015-04-29
 ------------------
 * Update qiutil version to pull in logger changes.
 
