@@ -7,7 +7,7 @@ import os
 import re
 import argparse
 from collections import defaultdict
-from qiutil import command
+import qiutil
 from qiutil.logging import logger
 from qidicom import meta
 
@@ -17,7 +17,7 @@ def main(argv=sys.argv):
     # Break out the logging options.
     log_opts = {k: opts.pop(k) for k in opts.keys() if k.startswith('log')}
     # Configure the logger.
-    command.configure_log('eddicom', log_opts)
+    qiutil.command.configure_log('qidicom', 'qiutil', log_opts)
     # Edit the tag values.
     meta.edit(*files, **edits)
 
@@ -29,7 +29,7 @@ def _parse_arguments():
     parser = argparse.ArgumentParser()
 
     # The log options.
-    command.add_options(parser)
+    qiutil.command.add_options(parser)
 
     # The tag edit argument.
     parser.add_argument('edits', help='the comma-delimited tag name=value settings')
