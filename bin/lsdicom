@@ -16,7 +16,7 @@ def main(argv=sys.argv):
     # Break out the logging options.
     log_opts = {k: opts.pop(k) for k in opts.keys() if k.startswith('log')}
     # Configure the logger.
-    qiutil.command.configure_log('qidicom', 'qiutil', log_opts)
+    qiutil.command.configure_log('qidicom', 'qiutil', **log_opts)
     # Print the tag value lines.
     _print_tag_values(*files, **opts)
 

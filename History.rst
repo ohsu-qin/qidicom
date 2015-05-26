@@ -1,6 +1,14 @@
 This history lists major release themes. See the GitHub commits
 for change details.
 
+2.2.7 / 2015-05-26
+------------------
+* Fix lsdicom logging defect.
+
+2.2.6 / 2015-05-07
+------------------
+* Use new logging interface.
+
 2.2.5 / 2015-05-05
 ------------------
 * Update qiutil version.
