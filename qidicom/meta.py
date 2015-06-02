@@ -3,11 +3,13 @@ import re
 import operator
 from dicom import datadict
 from qiutil.logging import logger
+from qiutil import functions
 from . import (reader, writer)
 
-# Uncomment to debug pydicom.
+# Uncomment the following lines to debug pydicom.
 # import dicom
 # dicom.debug(True)
+
 
 def select(ds, *tags):
     """
@@ -33,39 +35,50 @@ def select(ds, *tags):
     return tdict
 
 
-def edit(*in_files, **opts):
-    """
-    Sets the tags of the given DICOM files.
+class Editor(object):
+    """DICOM tag editor."""
+    
+    def __init__(self, **edits):
+        """
+        Creates a new DICOM tag editor.
 
-    :param in_files: the input DICOM files or directories containing
-        DICOM files
-    :param opts: the DICOM header (I{name}, I{value}) tag values to set
-        and the following option:
-    :param dest: the destination directory (default current directory)
-    :return: the modified file paths
-    """
-    dest = opts.pop('dest', os.getcwd())
-    # Name -> tag converter.
-    tag_for = lambda name: datadict.tag_for_name(name.replace(' ', ''))
-    # The {tag: value} dictionary.
-    tv = {tag_for(name): value for name, value in opts.iteritems()}
-    # The {tag: DICOM VR} dictionary.
-    tvr = {tag: datadict.get_entry(tag)[0] for tag in tv.iterkeys()}
+        :param edits: the :attr:`edits` tag value modifications
+        """
+        self.edits = edits
+        """
+        The DICOM header (I{name}, I{value}) tag modifications. The *value*
+        can be a literal or a function. If it is a function, then the
+        function is called on the current tag value, e.g.::
 
-    # The array to collect the DICOM file names.
-    fnames = []
-    # Edit the files.
-    logger(__name__).info("Editing the DICOM files with the following tag"
-                          " values: %s..." % tv)
-    for ds in writer.edit(*in_files, dest=dest):
+            meta.Editor(PatientID='Subject001',
+                        BodyPartExamined=str.upper)
+        """
+
+        # The VR used to create a new tag entry is the first member of the
+        # pydicom datadict value for the tag object.
+        self._tvr = {name: datadict.get_entry(self._tag_for(name))[0]
+                     for name in self.edits}
+        """The edit {tag: DICOM VR} dictionary."""
+
+    def edit(self, dataset):
+        """
+        Applies this editor's :attr:`edits` tag value modifications.
+
+        :param dataset: the pydicom dicom dataset object
+        """
+
         # Set the tag values.
-        for tag, value in tv.iteritems():
-            if tag in ds:
-                ds[tag].value = value
+        for attr, value in self.edits.iteritems():
+            if functions.is_function(value):
+                # Apply a function to the current tag value.
+                if hasattr(dataset, attr):
+                    resolved = value(getattr(dataset, attr))
+                    setattr(dataset, attr, resolved)
+            elif hasattr(dataset, attr):
+                setattr(dataset, attr, value)
             else:
-                ds.add_new(tag, tvr[tag], value)
-        _, fname = os.path.split(ds.filename)
-        fnames.append(fname)
+                tag = self._tag_for(attr)
+                dataset.add_new(tag, self._tvr[attr], value)
 
-    # Return the output file paths.
-    return [os.path.join(dest, f) for f in fnames]
+    def _tag_for(self, name):
+        return datadict.tag_for_name(name)
