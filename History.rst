@@ -1,6 +1,10 @@
 This history lists major release themes. See the GitHub commits
 for change details.
 
+2.2.8 / 2015-06-02
+------------------
+* Pull meta edit into the Editor class.
+
 2.2.7 / 2015-05-26
 ------------------
 * Fix lsdicom logging defect.
