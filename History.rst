@@ -1,6 +1,10 @@
 This history lists major release themes. See the GitHub commits
 for change details.
 
+2.3.3 / 2015-06-03
+------------------
+* Fix qiutil version number.
+
 2.3.2 / 2015-06-03
 ------------------
 * Standardize generator iterators.
