@@ -1,7 +1,11 @@
 This history lists major release themes. See the GitHub commits
 for change details.
 
-2.2.8 / 2015-06-02
+2.3.2 / 2015-06-03
+------------------
+* Standardize generator iterators.
+
+2.3.1 / 2015-06-02
 ------------------
 * Pull meta edit into the Editor class.
 
