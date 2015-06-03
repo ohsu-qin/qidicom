@@ -36,13 +36,13 @@ class DicomIterator(qiutil.file.FileIterator):
         super(DicomIterator, self).__init__(*dicom_files)
         self.opts = opts
 
-    def next(self):
+    def __iter__(self):
         """
         Iterates over each DICOM data set.
         
         :yield: the next pydicom dicom object
         """
-        for filename in super(DicomIterator, self).next():
+        for filename in super(DicomIterator, self).__iter__():
             with qiutil.file.open(filename) as fp:
                 try:
                     yield dicom.read_file(fp, **self.opts)
