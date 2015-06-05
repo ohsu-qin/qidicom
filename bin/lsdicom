@@ -4,11 +4,15 @@ Prints tab-delimited DICOM tag values.
 """
 import sys
 import os
+import re
 import argparse
 from collections import defaultdict
 import qiutil
 from qiutil.logging import logger
 from qidicom import (reader, meta)
+
+NL_TAB_REGEX = re.compile(r'[\r\n\t]+')
+
 
 def main(argv=sys.argv):
     # Parse the command line arguments.
@@ -149,7 +153,16 @@ def _read_tags(ds, *tags):
     :return: the filtered tag dictionary
     """
     tdict = meta.select(ds, *tags)
-    return {t: v for t, v in tdict.iteritems() if v and '\n' not in str(v)}
+    return {t: _replace_nl_tab(v) for t, v in tdict.iteritems()
+            if v and isinstance(v, str)}
+
+
+def _replace_nl_tab(s):
+    """
+    :param s: the input string
+    : the output with each newline or tab sequence replaced by blank.
+    """
+    return NL_TAB_REGEX.sub(' ', s)
 
 
 if __name__ == '__main__':
