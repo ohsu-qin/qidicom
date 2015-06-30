@@ -1,6 +1,10 @@
 This history lists major release themes. See the GitHub commits
 for change details.
 
+2.3.6 / 2015-06-30
+------------------
+* Generalize lsdicom for unicode tag values.
+
 2.3.5 / 2015-06-30
 ------------------
 * Fix lsdicom to not exclude numeric tag values.

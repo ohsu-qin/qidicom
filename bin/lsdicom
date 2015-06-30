@@ -132,10 +132,10 @@ def _collect_default_tags(*files):
     :param fps: the DICOM file paths, streams or datasets
     :return: the tags with a valid value
     """
-    tag_set = set()
+    tags = set()
     for ds in reader.iter_dicom_headers(*files):
         tdict = _read_tags(ds)
-        tag_set.update(tdict.iterkeys())
+        tags.update(tdict.iterkeys())
 
     # Sort the tags.
     return sorted(tags)
