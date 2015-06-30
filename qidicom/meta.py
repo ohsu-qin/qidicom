@@ -1,6 +1,5 @@
 import os
 import re
-import operator
 from dicom import datadict
 from qiutil.logging import logger
 from qiutil import functions
@@ -26,12 +25,12 @@ def select(ds, *tags):
     for t in tags:
         try:
             # The tag attribute.
-            tattr = re.sub('\W', '', t)
+            attr = re.sub('\W', '', t)
             # Collect the tag value.
-            tdict[t] = operator.attrgetter(tattr)(ds)
+            tdict[t] = getattr(ds, attr)
         except AttributeError:
             pass
-    
+
     return tdict
 
 
