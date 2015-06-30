@@ -136,33 +136,39 @@ def _collect_default_tags(*files):
         tdict = _read_tags(ds)
         tag_set.update(tdict.iterkeys())
 
-    # Sort the tags
-    tags = list(tag_set)
-    tags.sort()
-
-    return tags
+    # Sort the tags.
+    return sorted(tags)
 
 
 def _read_tags(ds, *tags):
     """
-    Reads the DICOM tags in the given file
-    Filters the given tag dictionary to exclude empty or multi-line tag values.
+    Reads the DICOM tags in the given file. The tags are filtered to
+    exclude empty tag values and replace newlines and tabs with a
+    space.
 
     :param ds: the pydicom dataset
     :param tags: the DICOM tags to read (default all tags)
     :return: the filtered tag dictionary
     """
     tdict = meta.select(ds, *tags)
-    return {t: _replace_nl_tab(v) for t, v in tdict.iteritems()
-            if v and isinstance(v, str)}
+    return {t: _tag_value(v) for t, v in tdict.iteritems()
+            if v != None and v != ''}
 
 
-def _replace_nl_tab(s):
+def _tag_value(value):
     """
-    :param s: the input string
-    : the output with each newline or tab sequence replaced by blank.
+    Returns the tag value, adjusted as follows:
+    * If the input is a string, then the input value value with each
+      newline or tab sequence replaced by blank
+    * Otherwise, the input value
+    
+    :param value: the input value
+    :return: the adjusted value
     """
-    return NL_TAB_REGEX.sub(' ', s)
+    if isinstance(value, six.string_types):
+        return NL_TAB_REGEX.sub(' ', value)
+    else:
+        return value
 
 
 if __name__ == '__main__':

@@ -1,6 +1,10 @@
 This history lists major release themes. See the GitHub commits
 for change details.
 
+2.3.5 / 2015-06-30
+------------------
+* Fix lsdicom to not exclude numeric tag values.
+
 2.3.4 / 2015-06-04
 ------------------
 * Replace lsdicom tag value newline and tab with blank.
