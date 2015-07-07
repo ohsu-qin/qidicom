@@ -1,6 +1,10 @@
 This history lists major release themes. See the GitHub commits
 for change details.
 
+2.3.7 / 2015-07-07
+------------------
+* Bump qiutil dependency version.
+
 2.3.6 / 2015-06-30
 ------------------
 * Generalize lsdicom for unicode tag values.
