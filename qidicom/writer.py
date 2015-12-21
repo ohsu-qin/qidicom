@@ -35,8 +35,7 @@ def edit(*in_files, **opts):
     # Open the DICOM store on each DICOM file (skipping non-DICOM files),
     # yield to the edit callback and save to the file in the destination
     # directory.
-    logger(__name__).debug("Editing %d DICOM files..." %
-                           (len(in_files), ds.filename))
+    logger(__name__).debug("Editing %d DICOM files..." % len(in_files))
     for ds in reader.iter_dicom(*in_files):
         # Delegate the edit.
         yield ds
