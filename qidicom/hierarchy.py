@@ -11,7 +11,7 @@ def group_by(tag, *files):
 
     :param tag: the DICOM tag
     :param dicom_files: the DICOM files or directories
-    :return: a {tag: [DICOM file names]} dictionary
+    :return: a {tag value: [DICOM file names]} dictionary
     """
     # Remove tag blanks.
     tag = tag.replace(' ', '')
