@@ -1,2 +1,2 @@
-pydicom==0.9.8
+pydicom
 qiutil
