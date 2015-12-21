@@ -28,12 +28,16 @@ def edit(*in_files, **opts):
                 os.makedirs(dest)
     else:
         dest = os.getcwd()
+    if isinstance(dest, str):
+        logger(__name__).debug("The edited DICOM files will be saved to %s." %
+                               dest)
 
     # Open the DICOM store on each DICOM file (skipping non-DICOM files),
     # yield to the edit callback and save to the file in the destination
     # directory.
+    logger(__name__).debug("Editing %d DICOM files..." %
+                           (len(in_files), ds.filename))
     for ds in reader.iter_dicom(*in_files):
-        logger(__name__).debug("Editing the DICOM file %s..." % ds.filename)
         # Delegate the edit.
         yield ds
         # Make the output file name.
@@ -46,4 +50,4 @@ def edit(*in_files, **opts):
             out_file = dest(ds.filename)
         # Save the modified dataset.
         ds.save_as(out_file)
-        logger(__name__).debug("Saved the edited DICOM file as %s." % out_file)
+    logger(__name__).debug("Saved the edited DICOM files.")
