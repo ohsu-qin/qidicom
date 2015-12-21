@@ -11,6 +11,7 @@ import six
 import qiutil
 from qiutil.logging import logger
 from qidicom import (reader, meta)
+from qidicom.hierarchy import ImageHierarchy
 
 NL_TAB_REGEX = re.compile(r'[\r\n\t]+')
 
@@ -99,10 +100,20 @@ def _print_tag_values(*files, **opts):
         ds = next(hdr for hdr in reader.iter_dicom_headers(*files))
         # The DICOM tag value dictionary.
         tdict = _read_tags(ds, *tags)
-        tag_col_len = max([len(tag) for tag in tags])
-        fmt = "%%-%ds\t%%s" % tag_col_len
-        for tag in tags:
-            print >> output, fmt % (tag, tdict[tag])
+        # If the --no-header option is not set, then print one
+        # line per tag. Otherwise, print one line with only the
+        # tab-delimited tag values.
+        if opts.get('header') == False:
+            tag_col_len = max([len(tag) for tag in tags])
+            # The tag print format, e.g. "%-12s\t%s" if the tag with
+            # the longest lenght is 12.
+            fmt = "%%-%ds\t%%s" % tag_col_len
+            for tag in tags:
+                print >> output, fmt % (tag, tdict[tag])
+        else:
+            values = [str(tdict[tag]).replace("\n", ' ') for tag in tags]
+            print >> output, '\t'.join(values)
+
         return
 
     # Print the header, if necessary.
@@ -120,7 +131,7 @@ def _print_tag_values(*files, **opts):
             dd = defaultdict(str)
             dd.update(tdict)
             # Collect the (possibly empty) string values for each tag.
-            values = [str(dd[t]) for t in tags]
+            values = [str(dd[t]).replace("\n", ' ') for t in tags]
             # Print the tab-delimited tag value line.
             print >> output, '\t'.join(values)
 
