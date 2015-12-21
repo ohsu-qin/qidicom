@@ -46,16 +46,9 @@ Run the following command for the utility options::
 Development
 ***********
 
-Testing is performed with the nose_ package, which must be installed separately.
+See the `qipipe Development Guide`_ for project download,
+testing and documentation.
 
-Documentation is built automatically by ReadTheDocs_ when the project is pushed
-to GitHub. Documentation can be generated locally as follows:
-
-* Install Sphinx_, if necessary.
-
-* Run the following in the ``doc`` subdirectory::
-
-    make html
 
 ---------
 
@@ -73,6 +66,8 @@ to GitHub. Documentation can be generated locally as follows:
 .. _pip: https://pypi.python.org/pypi/pip
 
 .. _Python: http://www.python.org
+
+.. _qipipe Development Guide: http://qipipe.readthedocs.org/en/latest/#development
 
 .. _ReadTheDocs: https://www.readthedocs.org
 
