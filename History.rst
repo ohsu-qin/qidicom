@@ -1,6 +1,10 @@
 This history lists major release themes. See the GitHub commits
 for change details.
 
+2.3.11 / 2016-02-03
+------------------
+* Fix regression to print the header by default.
+
 2.3.10 / 2015-12-21
 ------------------
 * Respect --no-header option for a single input file.
