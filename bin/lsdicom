@@ -103,7 +103,7 @@ def _print_tag_values(*files, **opts):
         # If the --no-header option is not set, then print one
         # line per tag. Otherwise, print one line with only the
         # tab-delimited tag values.
-        if opts.get('header') == False:
+        if opts.get('header', True):
             tag_col_len = max([len(tag) for tag in tags])
             # The tag print format, e.g. "%-12s\t%s" if the tag with
             # the longest lenght is 12.
@@ -117,7 +117,7 @@ def _print_tag_values(*files, **opts):
         return
 
     # Print the header, if necessary.
-    if opts.get('header'):
+    if opts.get('header', True):
         print >> output, '\t'.join(tags)
 
     for ds in reader.iter_dicom_headers(*files):
