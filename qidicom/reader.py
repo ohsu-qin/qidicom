@@ -8,7 +8,7 @@ from qiutil.file import FileIterator
 def iter_dicom(*dicom_files):
     """
     Iterates over the DICOM data sets for DICOM files at the given locations.
-    
+
     :param dicom_files: the DICOM files or directories containing DICOM files
     """
     return DicomIterator(*dicom_files)
@@ -17,7 +17,7 @@ def iter_dicom(*dicom_files):
 def iter_dicom_headers(*dicom_files):
     """
     Iterates over the DICOM headers for DICOM files at the given locations.
-    
+
     :param dicom_files: the DICOM files or directories containing DICOM files
     """
     return DicomHeaderIterator(*dicom_files)
@@ -39,15 +39,15 @@ class DicomIterator(qiutil.file.FileIterator):
     def __iter__(self):
         """
         Iterates over each DICOM data set.
-        
+
         :yield: the next pydicom dicom object
         """
-        for filename in super(DicomIterator, self).__iter__():
-            with qiutil.file.open(filename) as fp:
+        for f in super(DicomIterator, self).__iter__():
+            with qiutil.file.open(f) as fp:
                 try:
                     yield dicom.read_file(fp, **self.opts)
                 except InvalidDicomError:
-                    logger(__name__).info("Skipping non-DICOM file %s" % filename)
+                    logger(__name__).info("Skipping non-DICOM file %s" % f)
 
 
 class DicomHeaderIterator(DicomIterator):
@@ -59,4 +59,7 @@ class DicomHeaderIterator(DicomIterator):
     OPTS = dict(defer_size=256, stop_before_pixels=True, force=False)
 
     def __init__(self, *dicom_files):
-        super(DicomHeaderIterator, self).__init__(*dicom_files, **DicomHeaderIterator.OPTS)
+        super(
+            DicomHeaderIterator, self).__init__(*dicom_files,
+                                                **DicomHeaderIterator.OPTS
+        )
